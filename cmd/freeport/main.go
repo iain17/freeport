@@ -1,11 +1,24 @@
 package main
 
 import (
-	"fmt"
-	"github.com/phayes/freeport"
-	"strconv"
+	"github.com/iain17/freeport"
+	"gopkg.in/alecthomas/kingpin.v2"
+)
+
+var (
+	protocol = kingpin.Arg("protocol", "Protocol of the free port. TCP or UDP.").Required().String()
 )
 
 func main() {
-	fmt.Println(strconv.Itoa(freeport.GetPort()))
+	kingpin.Parse()
+	switch(*protocol) {
+		case "TCP":
+			println(freeport.GetTCPPort())
+			break
+		case "UDP":
+			println(freeport.GetUDPPort())
+			break
+		default:
+			println("Invalid protocol specified. Either specify UDP or TCP")
+	}
 }
