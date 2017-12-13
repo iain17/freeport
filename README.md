@@ -5,7 +5,7 @@ Get a free open TCP or UDP port that is ready to use
 
 ```bash
 # Ask the kernel to give us an open port.
-export port=$(freeport)
+export port=$(freeport TCP)
 
 # Start standalone httpd server for testing
 httpd -X -c "Listen $port" &
