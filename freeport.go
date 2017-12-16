@@ -6,18 +6,42 @@ import (
 	"fmt"
 )
 
-func IsFree(netType string, port int) bool {
-	addr, err := net.ResolveTCPAddr(netType, fmt.Sprintf("localhost:%d", port))
+func IsFreeTCP(port int) bool {
+	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf("localhost:%d", port))
 	if err != nil {
 		return false
 	}
 
-	l, err := net.ListenTCP(netType, addr)
+	l, err := net.ListenTCP("tcp", addr)
 	if err != nil {
 		return false
 	}
 	defer l.Close()
 	return true
+}
+
+func IsFreeUDP(port int) bool {
+	addr, err := net.ResolveUDPAddr("udp", fmt.Sprintf("localhost:%d", port))
+	if err != nil {
+		return false
+	}
+
+	l, err := net.ListenUDP("udp", addr)
+	if err != nil {
+		return false
+	}
+	defer l.Close()
+	return true
+}
+
+func IsFree(netType string, port int) bool {
+	if netType == "udp" {
+		return IsFreeUDP(port)
+	}
+	if netType == "tcp" {
+		return IsFreeTCP(port)
+	}
+	return false
 }
 
 /*
@@ -53,7 +77,7 @@ func GetPortRange(netType string, numRange int) int {
 			port = GetUDPPort()
 		}
 		for i := 0; i < numRange; i++ {
-			if !IsFree(netType, port+numRange) {
+			if !IsFree(netType, port+i) {
 				free = false
 				break
 			}
