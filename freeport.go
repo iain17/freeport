@@ -7,7 +7,7 @@ import (
 )
 
 func IsFreeTCP(port int) bool {
-	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf("localhost:%d", port))
+	addr, err := net.ResolveTCPAddr("tcp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		return false
 	}
@@ -21,7 +21,7 @@ func IsFreeTCP(port int) bool {
 }
 
 func IsFreeUDP(port int) bool {
-	addr, err := net.ResolveUDPAddr("udp", fmt.Sprintf("localhost:%d", port))
+	addr, err := net.ResolveUDPAddr("udp", fmt.Sprintf(":%d", port))
 	if err != nil {
 		return false
 	}
@@ -49,7 +49,7 @@ func IsFree(netType string, port int) bool {
  returns a int of the open port.
 */
 func GetTCPPort() int {
-	addr, err := net.ResolveTCPAddr("tcp", "localhost:0")
+	addr, err := net.ResolveTCPAddr("tcp", ":0")
 	if err != nil {
 		panic(err)
 	}
@@ -91,7 +91,7 @@ func GetPortRange(netType string, numRange int) int {
  returns a int of the open port.
 */
 func GetUDPPort() int {
-	addr, err := net.ResolveUDPAddr("udp", "localhost:0")
+	addr, err := net.ResolveUDPAddr("udp", ":0")
 	if err != nil {
 		panic(err)
 	}
